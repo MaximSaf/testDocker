@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Построение графа
+  #
+
+Нужно написать воркер, который будет строить граф на текущей странице, каждые 5 секунд
+От 5 до 30 элементов, случайным образом. Все ноды графа должны быть связаны.
+type Node struct {
+    ID int
+    Name string
+	Form string // &#34;circle&#34;, &#34;rect&#34;, &#34;square&#34;, &#34;ellipse&#34;, &#34;round-rect&#34;, &#34;rhombus&#34;
+    Links []*Node
+}
+
+  Mermaid Chart
+  #
+
+MermaidJS is library for generating svg charts and diagrams from text.
+
+  Пример
+  #
+
+
+
+  
+    {{&lt;/* mermaid [class=&#34;text-center&#34;]*/&gt;}}
+graph LR
+A[Square Rect] --&gt; B((Circle))
+A --&gt; C(Round Rect)
+B --&gt; D{Rhombus}
+C --&gt; D
+C --&gt; B
+{{&lt;/* /mermaid */&gt;}}
+
+  
+
+  
+    
+  
+
+graph LR
+A[Square Rect] --&gt; B((Circle))
+A --&gt; C(Round Rect)
+B --&gt; D{Rhombus}
+C --&gt; D
+C --&gt; B
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/tasks/graph/">
+  <meta property="og:site_name" content="Задачи с proxy">
+  <meta property="og:title" content="Построение графа">
+  <meta property="og:description" content="Построение графа # Нужно написать воркер, который будет строить граф на текущей странице, каждые 5 секунд От 5 до 30 элементов, случайным образом. Все ноды графа должны быть связаны.
+type Node struct { ID int Name string Form string // &#34;circle&#34;, &#34;rect&#34;, &#34;square&#34;, &#34;ellipse&#34;, &#34;round-rect&#34;, &#34;rhombus&#34; Links []*Node } Mermaid Chart # MermaidJS is library for generating svg charts and diagrams from text.
+Пример # {{&lt;/* mermaid [class=&#34;text-center&#34;]*/&gt;}} graph LR A[Square Rect] --&gt; B((Circle)) A --&gt; C(Round Rect) B --&gt; D{Rhombus} C --&gt; D C --&gt; B {{&lt;/* /mermaid */&gt;}} graph LR A[Square Rect] --&gt; B((Circle)) A --&gt; C(Round Rect) B --&gt; D{Rhombus} C --&gt; D C --&gt; B">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="tasks">
+<title>Построение графа | Задачи с proxy</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" >
+<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.5bbe1104f1edefe701304c959ae78d0fd3727b4846801cd1d56f07f9f98e8fbd.js" integrity="sha256-W74RBPHt7&#43;cBMEyVmueND9Nye0hGgBzR1W8H&#43;fmOj70=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Задачи с proxy</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/tasks/"  >
+        Обновление данных в реальном времени
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/tasks/graph/"  >
+        Построение графа
+      </a>
+  </li>
+  
+  <li>
+    <a href="/tasks/binary/"  >
+        Построение сбалансированного бинарного дерева
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Построение графа</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#mermaid-chart">Mermaid Chart</a></li>
+    <li><a href="#пример">Пример</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="построение-графа">
+  Построение графа
+  <a class="anchor" href="#%d0%bf%d0%be%d1%81%d1%82%d1%80%d0%be%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b3%d1%80%d0%b0%d1%84%d0%b0">#</a>
+</h1>
+<p>Нужно написать воркер, который будет строить граф на текущей странице, каждые 5 секунд
+От 5 до 30 элементов, случайным образом. Все ноды графа должны быть связаны.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Node</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ID</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Form</span> <span style="color:#66d9ef">string</span> <span style="color:#75715e">// &#34;circle&#34;, &#34;rect&#34;, &#34;square&#34;, &#34;ellipse&#34;, &#34;round-rect&#34;, &#34;rhombus&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Links</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="mermaid-chart">
+  Mermaid Chart
+  <a class="anchor" href="#mermaid-chart">#</a>
+</h2>
+<p><a href="https://mermaid-js.github.io/">MermaidJS</a> is library for generating svg charts and diagrams from text.</p>
+<h2 id="пример">
+  Пример
+  <a class="anchor" href="#%d0%bf%d1%80%d0%b8%d0%bc%d0%b5%d1%80">#</a>
+</h2>
+<div class="book-columns flex flex-wrap">
+
+  <div class="flex-even markdown-inner">
+    <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-tpl" data-lang="tpl"><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">&lt;/*</span> <span style="color:#a6e22e">mermaid</span> <span style="color:#f92672">[</span><span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text-center&#34;</span><span style="color:#f92672">]*/&gt;</span><span style="color:#75715e">}}</span>
+</span></span><span style="display:flex;"><span>graph LR
+</span></span><span style="display:flex;"><span>A[Square Rect] --&gt; B((Circle))
+</span></span><span style="display:flex;"><span>A --&gt; C(Round Rect)
+</span></span><span style="display:flex;"><span>B --&gt; D<span style="color:#75715e">{</span><span style="color:#a6e22e">Rhombus</span><span style="color:#75715e">}</span>
+</span></span><span style="display:flex;"><span>C --&gt; D
+</span></span><span style="display:flex;"><span>C --&gt; B
+</span></span><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">&lt;/*</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">mermaid</span> <span style="color:#f92672">*/&gt;</span><span style="color:#75715e">}}</span>
+</span></span></code></pre></div>
+  </div>
+
+  <div class="flex-even markdown-inner">
+    <script src="/mermaid.min.js"></script>
+  <script>mermaid.initialize({
+  "flowchart": {
+    "useMaxWidth":true
+  },
+  "theme": "default"
+}
+)</script>
+<p class="mermaid">
+graph LR
+A[Square Rect] --> B((Circle))
+A --> C(Round Rect)
+B --> D{Rhombus}
+C --> D
+C --> B
+</p>
+
+  </div>
+
+</div>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#mermaid-chart">Mermaid Chart</a></li>
+    <li><a href="#пример">Пример</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

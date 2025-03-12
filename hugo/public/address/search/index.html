@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Geo API
+  #
+
+
+Поиск адреса
+
+
+
+
+  Документация
+  #
+
+Маршрут: /api/address/search метод POST
+type SearchRequest struct {
+    Query string `json:&#34;query&#34;`
+}
+type SearchResponse struct {
+    Addresses []*Address `json:&#34;addresses&#34;`
+}
+Маршрут: /api/address/geocode метод POST
+type GeocodeRequest struct {
+    Lat string `json:&#34;lat&#34;`
+    Lng string `json:&#34;lng&#34;`
+}
+type GeocodeResponse struct {
+    Addresses []*Address `json:&#34;addresses&#34;`
+}
+
+  Провайдер
+  #
+
+API: https://dadata.ru/api/
+
+
+
+
+ 
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/address/search/">
+  <meta property="og:site_name" content="Задачи с proxy">
+  <meta property="og:title" content="Задачи с proxy">
+  <meta property="og:description" content="Geo API # Поиск адреса
+Документация # Маршрут: /api/address/search метод POST
+type SearchRequest struct { Query string `json:&#34;query&#34;` } type SearchResponse struct { Addresses []*Address `json:&#34;addresses&#34;` } Маршрут: /api/address/geocode метод POST
+type GeocodeRequest struct { Lat string `json:&#34;lat&#34;` Lng string `json:&#34;lng&#34;` } type GeocodeResponse struct { Addresses []*Address `json:&#34;addresses&#34;` } Провайдер # API: https://dadata.ru/api/">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="address">
+<title>Search | Задачи с proxy</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" >
+<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.5bbe1104f1edefe701304c959ae78d0fd3727b4846801cd1d56f07f9f98e8fbd.js" integrity="sha256-W74RBPHt7&#43;cBMEyVmueND9Nye0hGgBzR1W8H&#43;fmOj70=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Задачи с proxy</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/tasks/"  >
+        Обновление данных в реальном времени
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/tasks/graph/"  >
+        Построение графа
+      </a>
+  </li>
+  
+  <li>
+    <a href="/tasks/binary/"  >
+        Построение сбалансированного бинарного дерева
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Search</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#документация">Документация</a></li>
+    <li><a href="#провайдер">Провайдер</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="geo-api">
+  Geo API
+  <a class="anchor" href="#geo-api">#</a>
+</h1>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" crossorigin=""/>
+<p>Поиск адреса</p>
+<input id="search" />
+<div id="result"></div>
+<div id="mapid" style="height: 50vh"></div>
+<h2 id="документация">
+  Документация
+  <a class="anchor" href="#%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d0%b0%d1%86%d0%b8%d1%8f">#</a>
+</h2>
+<p>Маршрут: <code>/api/address/search</code> метод <code>POST</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SearchRequest</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Query</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;query&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SearchResponse</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Addresses</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">Address</span> <span style="color:#e6db74">`json:&#34;addresses&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Маршрут: <code>/api/address/geocode</code> метод <code>POST</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GeocodeRequest</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Lat</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;lat&#34;`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Lng</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;lng&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GeocodeResponse</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Addresses</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">Address</span> <span style="color:#e6db74">`json:&#34;addresses&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="провайдер">
+  Провайдер
+  <a class="anchor" href="#%d0%bf%d1%80%d0%be%d0%b2%d0%b0%d0%b9%d0%b4%d0%b5%d1%80">#</a>
+</h2>
+<p>API: <a href="https://dadata.ru/api/">https://dadata.ru/api/</a></p>
+<!-- Include Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin=""></script>
+<script>
+    let startPos = [59.9311, 30.3609];
+    var mymap = L.map('mapid').setView(startPos, 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; OpenStreetMap contributors',
+        maxZoom: 18
+    }).addTo(mymap);
+    var currentMarker = null;
+    // Обработчик события клика по карте
+    mymap.on('click', function(e) {
+        let data = {
+            lat: e.latlng.lat.toString(),
+            lng: e.latlng.lng.toString()
+        };
+        fetch('/api/address/geocode', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+           table.setData(data.addresses);
+           if (data.addresses.length > 0) {
+                mymap.flyTo([data.addresses[0].lat, data.addresses[0].lon], 17);
+                if (currentMarker) {
+                    // Перемещение существующего маркера
+                    currentMarker.setLatLng({lat: data.addresses[0].lat, lng: data.addresses[0].lon});
+                } else {
+                    // Создание нового маркера
+                    currentMarker = L.marker({lat: data.addresses[0].lat, lng: data.addresses[0].lon}).addTo(mymap);
+                }
+           }
+        })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+    });
+    // Сброс текущего маркера при двойном клике
+    mymap.on('dblclick', function(e) {
+        console.log('dblclick');
+        if (currentMarker) {
+            mymap.removeLayer(currentMarker);
+            currentMarker = null;
+        }
+    });
+</script>
+<link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator.min.css" rel="stylesheet">
+ <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.5.0/dist/js/tabulator.min.js"></script>
+<script type="text/javascript">
+//Build Tabulator
+var tableData = [];
+var table = new Tabulator("#result", {
+    height:"311px",
+    layout:"fitColumns",
+    reactiveData:true, //turn on data reactivity
+    responsiveLayout: "hide",
+    data:tableData, //assign data to table
+    placeholder:"No Data Set",
+    selectable: true,
+    autoColumns:true, //create columns from data field names
+    rowClick:function(e, cell) {
+        e.preventDefault();
+        console.log("rowClick fired");
+        e.stopPropagation();
+    },
+    selectableCheck:function(row){
+        //row - row component
+        let data = row.getData();
+        if (data.lat != "" && data.lon != "") {
+            mymap.flyTo([data.lat, data.lon], 17);
+            if (currentMarker) {
+                // Перемещение существующего маркера
+                currentMarker.setLatLng({lat: data.lat, lng: data.lon});
+            } else {
+                // Создание нового маркера
+                currentMarker = L.marker({lat: data.lat, lng: data.lon}).addTo(mymap);
+            }
+        }
+        table.deselectRow();
+        console.log("select fired");
+        return true; //allow selection of rows where the age is greater than 18
+    },
+});
+document.getElementById('search').addEventListener('input', function() {
+    console.log('search change');
+    if (this.value.length < 3) {
+        return;
+    }
+    const data = {
+        query: this.value
+    };
+    fetch('/api/address/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+       table.setData(data.addresses);
+       if (data.addresses.length > 0) {
+            mymap.flyTo([data.addresses[0].lat, data.addresses[0].lon], 17);
+       }
+    })
+    .catch(error => {
+        console.log('Error:', error);
+    });
+});
+</script>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#документация">Документация</a></li>
+    <li><a href="#провайдер">Провайдер</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
